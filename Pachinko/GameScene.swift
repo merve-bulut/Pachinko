@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         let background = SKSpriteNode(imageNamed: "background")
         background.position = CGPoint(x: 512, y: 384)
@@ -16,6 +16,7 @@ class GameScene: SKScene {
         addChild(background)
         
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        physicsWorld.contactDelegate = self
         
         for i in 0..<5 {
             let xValue = i * 256
@@ -36,6 +37,7 @@ class GameScene: SKScene {
         let ball = SKSpriteNode(imageNamed: "ballRed")
         ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)
         ball.physicsBody?.restitution = 0.4
+        ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0
         ball.position = location
         ball.name = "ball"
         addChild(ball)
