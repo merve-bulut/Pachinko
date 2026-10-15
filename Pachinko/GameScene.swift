@@ -18,15 +18,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.contactDelegate = self
         
-        for i in 0..<5 {
-            let xValue = i * 256
-            makeBouncer(at: CGPoint(x: xValue, y: 0))
-        }
-        
         for i in 0..<4 {
             let xValue = 128 + (i * 256)
             let isGood: Bool = (i % 2 == 0)
             makeSlot(at: CGPoint(x: xValue, y: 0), isGood: isGood)
+        }
+        
+        for i in 0..<5 {
+            let xValue = i * 256
+            makeBouncer(at: CGPoint(x: xValue, y: 0))
         }
     }
     
