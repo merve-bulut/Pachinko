@@ -80,6 +80,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 box.physicsBody = SKPhysicsBody(rectangleOf: box.size)
                 box.physicsBody?.isDynamic = false
+                box.name = "box"
                 addChild(box)
             } else {
                 let ball = SKSpriteNode(imageNamed: ballList.randomElement() ?? "ballRed")
@@ -152,11 +153,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         guard let nodeA = contact.bodyA.node else { return }
         guard let nodeB = contact.bodyB.node else { return }
+        var otherNode: SKNode?
         
         if nodeA.name == "ball" {
             collision(between: nodeA, object: nodeB)
+            otherNode = nodeB
         } else if nodeB.name == "ball" {
             collision(between: nodeB, object: nodeA)
+            otherNode = nodeA
+        }
+        
+        if otherNode?.name == "box" {
+            otherNode?.removeFromParent()
         }
     }
 }
