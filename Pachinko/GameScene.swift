@@ -28,6 +28,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    var ballLabel: SKLabelNode!
+    
+    var ballNumber = 5 {
+        didSet {
+            ballLabel.text = "Ball Number: \(ballNumber)"
+        }
+    }
+    
     let ballList = ["ballBlue", "ballCyan", "ballGreen", "ballGrey", "ballPurple", "ballRed", "ballYellow"]
     
     override func didMove(to view: SKView) {
@@ -48,6 +56,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         editLabel.position = CGPoint(x: 80, y: 700)
         addChild(editLabel)
         
+        ballLabel = SKLabelNode(fontNamed: "Chalkduster")
+        ballLabel.text = "Ball Number: 5"
+        ballLabel.horizontalAlignmentMode = .right
+        ballLabel.position = CGPoint(x: 980, y: 670)
+        addChild(ballLabel)
+
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.contactDelegate = self
         
@@ -83,13 +97,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 box.name = "box"
                 addChild(box)
             } else {
-                let ball = SKSpriteNode(imageNamed: ballList.randomElement() ?? "ballRed")
-                ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)
-                ball.physicsBody?.restitution = 0.4
-                ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0
-                ball.position = CGPoint(x: xLocation, y: 670)
-                ball.name = "ball"
-                addChild(ball)
+                if ballNumber > 0 {
+                    let ball = SKSpriteNode(imageNamed: ballList.randomElement() ?? "ballRed")
+                    ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)
+                    ball.physicsBody?.restitution = 0.4
+                    ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0
+                    ball.position = CGPoint(x: xLocation, y: 670)
+                    ball.name = "ball"
+                    addChild(ball)
+                    ballNumber -= 1
+                } else {
+                    ballLabel.text = "No Balls Left"
+                }
             }
         }
     }
